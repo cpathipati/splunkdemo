@@ -1,0 +1,16 @@
+<apex:page standardController="Account" extensions="newAccountCreation" tabStyle="Account">
+    <apex:form >
+        <apex:pageBlock title="Account Creation in Org-2" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!saveOrg2Account}" rerender="error"/> 
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection >
+                <apex:inputField value="{!newAccnt.name}" required="true"/>
+                <apex:inputField value="{!newAccnt.type}" />
+                <apex:inputField value="{!newAccnt.Site}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>   
+    </apex:form>
+    
+</apex:page>

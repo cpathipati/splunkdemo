@@ -1,0 +1,25 @@
+<apex:page controller="RESTGetAccountsFromOrg2">
+    <apex:form id="form">
+        <apex:sectionHeader title="Accounts from Org-2" subtitle="List View"/>
+        
+        <apex:pageBlock id="Org2Accounts" >
+            <apex:pageBlockButtons >
+                <apex:commandButton value="New" action="{!newOrg2Account}" rerender="error"/> 
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockTable value="{!accounts}" var="key" rendered="true" >
+                
+                <apex:column >
+                    <apex:facet name="header">Account Name</apex:facet>
+                    <apex:outputLink value="/{!key.Id}">{!key.Name}</apex:outputLink>
+                </apex:column>
+                
+            </apex:pageBlockTable>
+            <apex:commandButton value="First" action="{!beginning}" disabled="{!DisablePrevious}" />
+            <apex:commandButton value="Previous" action="{!previous}" disabled="{!DisablePrevious}"/>
+            <apex:commandButton value="Next" action="{!next}" disabled="{!DisableNext}"/>
+            <apex:commandButton value="Last" action="{!End}" disabled="{!DisableNext}"/>
+            <apex:facet name="footer">Showing Page # {!pageNumber} of {!totalPages}</apex:facet>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

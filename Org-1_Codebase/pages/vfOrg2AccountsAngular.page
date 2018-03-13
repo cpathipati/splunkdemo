@@ -1,0 +1,137 @@
+<apex:page controller="AccountQueryVFController">
+
+     <apex:includeScript value="{!URLFOR($Resource.pagination,'Account_Pagination/js/angular.js')}"  />
+     <apex:includeScript value="{!URLFOR($Resource.pagination,'Account_Pagination/js/jQuery_1_9.js')}"  />
+     <apex:stylesheet value="{!URLFOR($Resource.pagination,'Account_Pagination/css/bootstrap.min.css')}" />   
+     <apex:stylesheet value="{!URLFOR($Resource.pagination,'Account_Pagination/css/basic.css')}" />
+     <apex:includeScript value="{!URLFOR($Resource.pagination,'Account_Pagination/js/dirPagination.js')}"  />
+
+ 
+<div ng-app="myApp">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div ng-controller="MyController" class="my-controller" >
+          <h3>Accounts</h3>
+          <small> from "Org-2"</small>
+
+
+          <div class="row">
+            <div class="col-xs-4">
+              <p>Accounts Page #: {{ currentPage }}</p>
+            </div>
+
+            <div class="col-xs-4" >
+              <label for="search">Search:</label>
+              <input ng-model="q" id="search" class="form-control"></input>
+            </div>
+            
+            <div class="col-xs-4" >
+              <label for="search">items per page:</label>
+              <input type="number" min="1" max="100" class="form-control" ng-model="pageSize"></input>
+            </div>
+            
+          </div>
+          <br></br>
+          <div class="panel panel-default">
+            <table datatable="" dt-options="dtOptions" class = "row-border hover">
+
+              <ul>
+              <thead>
+                <li dir-paginate="account in accounts | filter:q | itemsPerPage: pageSize" current-page="currentPage"><apex:outputText value="{{ account }}"/></li>
+                </thead>
+              </ul>
+            </table>
+          </div>
+        </div>
+
+        <div ng-controller="OtherController" class="other-controller">
+          <div class="text-center">
+
+            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" >
+            <ul class="pagination" ng-if="1 < pages.length || !autoHide">
+                <li class="navli" ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }">
+                    <a href="" ng-click="setCurrent(1)">&laquo;</a>
+                </li>
+                <li class="navli" ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }">
+                    <a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a>
+                </li>
+                <li class="navli" ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == '...' }">
+                    <a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a>
+                </li>
+
+                <li class="navli" ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }">
+                    <a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a>
+                </li>
+                <li class="navli" ng-if="boundaryLinks"  ng-class="{ disabled : pagination.current == pagination.last }">
+                    <a href="" ng-click="setCurrent(pagination.last)">&raquo;</a>
+                </li>
+            </ul>
+            </dir-pagination-controls>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var app = angular.module('myApp', ['dirPagination']);
+app.controller('MyController', function MyController($scope) {
+  $scope.currentPage = 1;
+  $scope.pageSize = 10;
+  $scope.accounts= [];
+    
+  var obj = {!fetchAcnts};
+  console.log(obj.length);
+  for (var i=0;i<=obj.length;i++){
+    $scope.accounts.push(obj[i]);
+ }
+  
+  $scope.pageChangeHandler = function(num) {
+      console.log('account page changed to ' + num);
+  };
+});
+
+
+app.controller('OtherController', function OtherController($scope) {
+  $scope.pageChangeHandler = function(num) {
+    console.log('going to page ' + num);
+  };
+});
+
+</script>
+
+<style type="text/css">
+.my-controller {
+  border: 1px solid #fcc;
+  padding: 5px;
+  margin: 3px;
+}
+.my-controller small {
+  color: #c99;
+}
+.other-controller {
+  border: 1px solid #ccf;
+  padding: 5px;
+  margin: 3px;
+}
+.other-controller small {
+  color: #99c;
+}
+.third-controller {
+  border: 1px solid #cfc;
+  padding: 5px;
+  margin: 3px;
+}
+.third-controller small {
+  color: #9c9;
+}
+
+.navli{
+    display: inline-block;
+}
+ </style>
+
+</apex:page>
